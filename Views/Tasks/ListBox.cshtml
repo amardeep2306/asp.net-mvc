@@ -1,0 +1,42 @@
+﻿@model asp.net_mvc.Models.ListBoxViewModel
+<div class="row">
+    <form>
+        <div class="col-lg-12">
+            <div class="col-lg-6 float-lg-start">
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Products, new { @class = "form-label" })
+                    @Html.DropDownListFor(model => model.Products, Model.Products, "Please select", new { @class = "form-select" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.SelectedProductPrice, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.SelectedProductPrice, new { @class = "form-control", @disabled = true })
+                </div>
+                
+            </div>
+            <div class="col-lg-6 float-lg-end">
+                <div class="mb-6">
+                    @Html.LabelFor(model => model.SelectedProductImage, new { @class = "form-label" })
+                </div>
+                <img id="selectedProductImage" height="150" width="150" class="img-thumbnail" alt="Default Image" />
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $("#Products").change(function () {
+        var selectedItemID = $("#Products option:selected").val();
+        if (selectedItemID != null && selectedItemID != 0) {
+            $.ajax({
+                url: "/api/product/" + selectedItemID, type: 'Get', success: function (response) {
+                    $("#SelectedProductPrice").val(response.Price);
+                    $("#selectedProductImage").attr("src", response.Image);
+                }
+            })
+        } else {
+            $("#SelectedProductPrice").val('');
+            $("#selectedProductImage").attr("src", "");
+        }
+
+    })
+</script>

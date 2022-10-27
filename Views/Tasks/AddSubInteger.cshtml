@@ -1,0 +1,31 @@
+﻿@model asp.net_mvc.Models.AddSubIntegerViewModel
+
+<div class="row">
+    <div class="col-md-4 mx-auto">
+        @using (Html.BeginForm("AddSubInteger", "Tasks", FormMethod.Post))
+        {
+            <div class="mb-3">
+                @Html.LabelFor(x => x.FirstNumber, new { @class = "form-label" })
+                @Html.TextBoxFor(x => x.FirstNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.FirstNumber)
+            </div>
+
+            <div class="mb-3">
+                @Html.LabelFor(x => x.SecondNumber, new { @class = "form-label" })
+                @Html.TextBoxFor(x => x.SecondNumber, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.SecondNumber)
+            </div>
+
+            <div class="mb-3 text-center">
+                <button type="submit" class="btn btn-primary me-2" value="Add" name="Command">Add</button>
+                <button type="submit" class="btn btn-primary" value="Subtract" name="Command">Subtract</button>
+            </div>
+
+            @Html.Label("Output: ")
+            if (ViewData.ModelState.IsValid)
+            {
+                <label class="mx-1 fw-bold">@Html.DisplayFor(x => x.Result)</label>
+            }
+        }
+    </div>
+</div>
