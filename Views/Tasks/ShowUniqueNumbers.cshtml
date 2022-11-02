@@ -1,0 +1,22 @@
+﻿@model asp.net_mvc.Models.UniqueNumbersViewModel
+
+<div class="col-md-3 mx-auto">
+    @using (Html.BeginForm("showuniquenumbers", "tasks", FormMethod.Post, new { @class = "form" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Number, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Number, new { @class = "form-control", @autocomplete="off" })
+            @Html.ValidationMessageFor(model => model.Number)
+        </div><div class="btn-group mt-2">
+            <button type="submit" class="btn btn-primary text">
+                Show Unique Numbers
+            </button>
+        </div>
+        <div class="form-group mt-2">
+            @if (Model != null && Model.UniqueNumbers != null) { 
+                @Html.LabelFor(model => model.UniqueNumbers, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.UniqueNumbers, new { @class = "form-control", @disabled = true })
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,47 @@
+﻿@model asp.net_mvc.Models.RadioButtonListViewModel
+<div class="col-md-6 mx-auto">
+    @using (Html.BeginForm("index", "radiobuttonform", FormMethod.Get, new { @class = "form" }))
+    { 
+        <div class="col-lg-12 m-5">
+            <div class="col-lg-6 float-lg-start">
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.Flowers, new { @class = "form-label" })
+                    @foreach (var item in Model.Flowers)
+                    {
+                        <div class="form-check">
+                            @Html.RadioButtonFor(m => m.SelectedtFlower, item.Id, new { @class = "form-check-input" })
+                            <label class="form-check-label">@item.Name</label>
+                        </div>
+                    }
+                <div class="btn-group mt-2">
+                    <button type="button" id="showImageButton" class="btn btn-primary text">
+                        Show Image
+                    </button>
+                </div>
+                </div>
+            </div>
+            <div class="col-lg-6 float-lg-end">
+                <div class="mb-6">
+                    @Html.LabelFor(model => model.SelectedtImage, new { @class = "form-label" })
+                </div>
+                <img id="SelectedtImage" height="150" width="150" class="img-thumbnail" alt="Default Image" src="/images/no-image-found.jpg" />
+            </div>
+        </div>
+      }
+</div>
+<script>
+    $('#showImageButton').click(function () {
+        var selectedItemID = $('input[name="SelectedtFlower"]:checked').val();
+        if (selectedItemID != null && selectedItemID != 0) {
+            $.ajax({
+                url: "/api/flowerapi/" + selectedItemID, type: 'Get', success: function (response) {
+                    $("#SelectedtImage").attr("src", response.Image);
+                }
+            })
+        } else {
+            alert("Please select a flower from radio button list");
+            $("#SelectedtImage").attr("src", "/images/no-image-found.jpg");
+        }
+
+    })
+</script>

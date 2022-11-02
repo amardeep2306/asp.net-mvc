@@ -8,7 +8,7 @@ namespace asp.net_mvc.Controllers
         // GET: Home
         public ActionResult Index()
         {
-            ViewBag.Title = "Asp.net Training Tasks";
+            ViewBag.Title = "Asp.net MVC Training Tasks";
             return View();
         }
     }
