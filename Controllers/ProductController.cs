@@ -2,46 +2,33 @@
 using System.Collections.Generic;
 using System.Web.Http;
 using asp.net_mvc.Models;
-
+using System.Linq;
 
 namespace asp.net_mvc.Controllers
 {
     public class ProductController : ApiController
     {
-        List<Product> productItems = new List<Product>
-        {
-            new Product() { ProductId = 101, ProductName = "Scooter", Image = "/images/scooter.png", Price = 45000 },
-            new Product() { ProductId = 102, ProductName = "Ebike", Image = "/images/ebike.jpg", Price = 38000 },
-            new Product() { ProductId = 103, ProductName = "Bike", Image = "/images/bike.jpg", Price = 94000 },
-            new Product() { ProductId = 104, ProductName = "Car", Image = "/images/car.jpg", Price = 494000 }
-        };
+        private ProductDBContext db = new ProductDBContext();
 
         // GET: api/product
         public List<Product> Get()
         {
-            return productItems;
+            var products = from p in db.Products
+                           orderby p.ProductId
+                           select p;
+
+            return products.ToList();
         }
 
         // GET: api/product/5
         public Product Get(int id)
         {
-            Product item = productItems.Find(temp => temp.ProductId == id);
-            return item;
-        }
+            var products = from p in db.Products
+                           orderby p.ProductId
+                           where p.ProductId == id
+                           select p;
 
-        // POST: api/product
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/product/5
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/product/5
-        public void Delete(int id)
-        {
+            return products.SingleOrDefault();
         }
     }
 }

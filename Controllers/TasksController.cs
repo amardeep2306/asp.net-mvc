@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Web.Mvc;
 using asp.net_mvc.Models;
+using System.Linq;
 
 namespace asp.net_mvc.Controllers
 {
     public class TasksController : Controller
     {
+        private FlowerDBContext db = new FlowerDBContext();
+        private ProductDBContext productDB = new ProductDBContext();
+
         // GET: Task
         public ActionResult Index()
         {
@@ -52,15 +56,12 @@ namespace asp.net_mvc.Controllers
         public ActionResult ListBox(ListBoxViewModel lbm)
         {
             ViewBag.Title = "Show image and price based on the item selection";
-            List<Product> products = new List<Product>()
-            {
-                new Product() { ProductId = 101, ProductName = "Scooter", Image = "/images/scooter.png", Price = 45000 },
-                new Product() { ProductId = 102, ProductName = "Ebike", Image = "/images/ebike.jpg", Price = 38000 },
-                new Product() { ProductId = 103, ProductName = "Bike", Image = "/images/bike.jpg", Price = 94000 },
-                new Product() { ProductId = 104, ProductName = "Car", Image = "/images/car.jpg", Price = 494000 }
-            };
-            ViewBag.products = products;
-            lbm.Products = products.ConvertAll(p =>
+            var products = from p in productDB.Products
+                          orderby p.ProductId
+                          select p;
+            var productList = products.ToList();
+
+            lbm.Products = productList.ConvertAll(p =>
             {
                 return new SelectListItem()
                 {
@@ -69,6 +70,7 @@ namespace asp.net_mvc.Controllers
                     Selected = false
                 };
             });
+
             return View(lbm);
         }
 
@@ -76,7 +78,13 @@ namespace asp.net_mvc.Controllers
         public ActionResult RadioButtonList(RadioButtonListViewModel rblvm)
         {
             ViewBag.Title = "Show image based on the radio button list item selection";
-           
+
+            var flowers = from f in db.Flowers
+                          orderby f.Id
+                          select f;
+
+            rblvm.Flowers =  flowers.ToList();
+
             return View(rblvm);
         }
 
@@ -105,9 +113,6 @@ namespace asp.net_mvc.Controllers
                         resultString += givenNumber[i];
                     }
                 }
-
-                System.Diagnostics.Debug.WriteLine("givenNumber: "+ givenNumber);
-                System.Diagnostics.Debug.WriteLine("resultString: " + resultString);
 
                 unvm.UniqueNumbers = resultString;
             }

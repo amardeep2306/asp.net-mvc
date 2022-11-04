@@ -14,11 +14,11 @@
                 </div>
                 
             </div>
-            <div class="col-lg-6 float-lg-end">
+            <div class="col-lg-5 float-lg-end mx-2">
                 <div class="mb-6">
                     @Html.LabelFor(model => model.SelectedProductImage, new { @class = "form-label" })
                 </div>
-                <img id="selectedProductImage" height="150" width="150" class="img-thumbnail" alt="Default Image" />
+                <img id="selectedProductImage" height="150" width="150" class="img-thumbnail" alt="Default Image" src="/images/no-image-found.jpg" />
             </div>
         </div>
     </form>
@@ -35,7 +35,7 @@
             })
         } else {
             $("#SelectedProductPrice").val('');
-            $("#selectedProductImage").attr("src", "");
+            $("#selectedProductImage").attr("src", "/images/no-image-found.jpg");
         }
 
     })
